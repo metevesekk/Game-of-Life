@@ -23,4 +23,8 @@ struct Cell : Hashable {
         return neigborValues
         
     }
+    
+    func copy(isAlive: Bool) -> Cell {
+        return Cell(isAlive: isAlive, x: self.x, y: self.y)
+    }
 }
