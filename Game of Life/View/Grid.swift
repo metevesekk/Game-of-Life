@@ -59,6 +59,7 @@ class Grid : UIView {
                 setCellAlive(cell: cell)
             }
         }
+
     }
 
 

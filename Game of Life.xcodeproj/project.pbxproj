@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		354BD8112AF29772005DBAD2 /* GridExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354BD8102AF29772005DBAD2 /* GridExtension.swift */; };
+		3599D5652AF42D6B0066A624 /* Deneme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3599D5642AF42D6B0066A624 /* Deneme.swift */; };
+		3599D5672AF42EFC0066A624 /* CellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3599D5662AF42EFB0066A624 /* CellExtension.swift */; };
 		35F11D792AF1A2F100CD38FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F11D782AF1A2F100CD38FA /* AppDelegate.swift */; };
 		35F11D7B2AF1A2F100CD38FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F11D7A2AF1A2F100CD38FA /* SceneDelegate.swift */; };
 		35F11D802AF1A2F100CD38FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F11D7E2AF1A2F100CD38FA /* Main.storyboard */; };
@@ -42,6 +44,8 @@
 /* Begin PBXFileReference section */
 		354BD8102AF29772005DBAD2 /* GridExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridExtension.swift; sourceTree = "<group>"; };
 		354BD8122AF2C86F005DBAD2 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		3599D5642AF42D6B0066A624 /* Deneme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deneme.swift; sourceTree = "<group>"; };
+		3599D5662AF42EFB0066A624 /* CellExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellExtension.swift; sourceTree = "<group>"; };
 		35F11D752AF1A2F100CD38FA /* Game of Life.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game of Life.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35F11D782AF1A2F100CD38FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35F11D7A2AF1A2F100CD38FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				354BD8102AF29772005DBAD2 /* GridExtension.swift */,
+				3599D5642AF42D6B0066A624 /* Deneme.swift */,
+				3599D5662AF42EFB0066A624 /* CellExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -306,9 +312,11 @@
 			files = (
 				35F11DB12AF1AB5D00CD38FA /* ViewController.swift in Sources */,
 				35F11D792AF1A2F100CD38FA /* AppDelegate.swift in Sources */,
+				3599D5672AF42EFC0066A624 /* CellExtension.swift in Sources */,
 				35F11DAF2AF1A36700CD38FA /* Cell.swift in Sources */,
 				35F11D832AF1A2F100CD38FA /* Game_of_Life.xcdatamodeld in Sources */,
 				35F11D7B2AF1A2F100CD38FA /* SceneDelegate.swift in Sources */,
+				3599D5652AF42D6B0066A624 /* Deneme.swift in Sources */,
 				35F11DB32AF1ABA000CD38FA /* Grid.swift in Sources */,
 				354BD8112AF29772005DBAD2 /* GridExtension.swift in Sources */,
 			);
