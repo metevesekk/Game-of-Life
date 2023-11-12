@@ -6,13 +6,16 @@ class ViewController: UIViewController {
     var isGameRunning = false
     var gameOfLifeGrid: Grid!
     let playPauseButton = UIButton()
+    let restartButton = UIButton()
+    let clearButton = UIButton()
+    var countRound = UILabel()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Grid setup
+        view.backgroundColor = .white
         setupGameOfLifeGrid()
-        // Play/Pause buton setup
-        setupPlayPauseButton()
+        setupButtonsAndStackView()
     }
     
     func setupGameOfLifeGrid() {
@@ -26,30 +29,79 @@ class ViewController: UIViewController {
             gameOfLifeGrid.heightAnchor.constraint(equalToConstant: 435)
         ])
     }
-
-    func setupPlayPauseButton() {
-        playPauseButton.setTitle("Start", for: .normal)
-        playPauseButton.backgroundColor = .red
-        playPauseButton.setTitleColor(UIColor(named: "white"), for: .normal)
-        playPauseButton.addTarget(self, action: #selector(toggleGameRunning), for: .touchUpInside)
+    
+    func setupButtonsAndStackView() {
+        // Butonları ayarla
+        setupButton(restartButton, title: "Restart", selector: #selector(restartFunc))
+        setupButton(playPauseButton, title: "Start", selector: #selector(toggleGameRunning))
+        setupButton(clearButton, title: "Clear", selector: #selector(clearFunc))
         
-        view.addSubview(playPauseButton)
-        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        // Butonları UIStackView içinde grupla
+        let stackView = UIStackView(arrangedSubviews: [restartButton, playPauseButton, clearButton])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Stack view kısıtlamalarını etkinleştir
         NSLayoutConstraint.activate([
-            playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playPauseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
+    
+    // Buton kurulumunu sadeleştirmek için yardımcı fonksiyon
+    func setupButton(_ button: UIButton, title: String, selector: Selector) {
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.5
+        button.addTarget(self, action: selector, for: .touchUpInside)
+
+        // Butona tıklanıldığında renginin koyulaşmasını sağlayacak fonksiyonları ekle
+        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchDown)
+        button.addTarget(self, action: #selector(didReleaseButton(_:)), for: [.touchUpInside, .touchUpOutside])
+    }
+    
+    
     
     func startGame() {
         isGameRunning = true
         gameTimer = Timer.scheduledTimer(timeInterval: 0.06, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
+        clearButton.backgroundColor = .systemGray
     }
     
     func stopGame() {
         isGameRunning = false
         gameTimer?.invalidate()
         gameTimer = nil
+        clearButton.backgroundColor = .systemBlue
+    }
+    
+    @objc func didTapButton(_ button: UIButton) {
+        button.alpha = 0.7 // Koyulaşma efekti
+    }
+
+    @objc func didReleaseButton(_ button: UIButton) {
+        button.alpha = 1.0 // Normal şeffaflık
+    }
+    
+    @objc func restartFunc(){
+
+    }
+    
+    @objc func clearFunc(_ button: UIButton){
+        if !isGameRunning{
+            gameOfLifeGrid.aliveCells = []
+            gameOfLifeGrid.advanceTimeStep()
+        }
     }
     
     @objc func performGameStep() {
