@@ -17,8 +17,8 @@ class Grid : UIView {
         guard let context = UIGraphicsGetCurrentContext() else {return}
         
         //Hücreleri Çizelim
-        for y in 0..<Int(bounds.height/cellSize){
-            for x in 0..<Int(bounds.width/cellSize){
+        for y in -1..<Int(bounds.height/cellSize){
+            for x in -1..<Int(bounds.width/cellSize){
                 let cellRect = CGRect(x: CGFloat(x) * cellSize, y: CGFloat(y) * cellSize, width: cellSize, height: cellSize)
                 
                 if aliveCells.contains(Cell(isAlive: true, x: x, y: y)) {
@@ -72,10 +72,43 @@ class Grid : UIView {
             if (aliveCells.contains(cell) && (livingNeighborsCount == 2 || livingNeighborsCount == 3)) || (!aliveCells.contains(cell) && livingNeighborsCount == 3) {
                 newAliveCells.insert(cell.copy(isAlive: true))
             }
+            
+            if aliveCells.contains(where: { cell in
+                cell.x == Int((bounds.width/cellSize) - 1) && cell.y == cell.y
+            }){
+                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+                    neighbor.x == Int(bounds.width/cellSize)
+                } , x: 0, y: cell.y))
+            }
+            
+            if aliveCells.contains(where: { cell in
+                cell.x == 0 && cell.y == cell.y
+            }){
+                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+                    neighbor.x == -1
+                } , x: Int((bounds.width/cellSize) - 1), y: cell.y))
+            }
+            
+            if aliveCells.contains(where: { cell in
+                cell.y == Int((bounds.height/cellSize) - 1) && cell.x == cell.x
+            }){
+                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+                    neighbor.y == Int(bounds.height/cellSize)
+                } , x: cell.x, y: 0))
+            }
+            
+            if aliveCells.contains(where: { cell in
+                cell.y == 0 && cell.x == cell.x
+            }){
+                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+                    neighbor.y == -1
+                } , x: cell.x, y: Int((bounds.height/cellSize) - 1)))
+            }
+            
         }
-        
         // Setimizi güncelleyelim.
         aliveCells = newAliveCells
+
         setNeedsDisplay()
     }
 
