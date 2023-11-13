@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class Grid : UIView {
-    var cellSize : CGFloat = 15
+    var cellSize : CGFloat = 7.5
     var aliveCells : Set<Cell> = []
     var lastToggledCell: Cell?
     
@@ -24,7 +24,7 @@ class Grid : UIView {
                 if aliveCells.contains(Cell(isAlive: true, x: x, y: y)) {
                     context.setFillColor(UIColor.black.cgColor)
                 } else {
-                    context.setFillColor(UIColor.systemYellow.cgColor)
+                    context.setFillColor(UIColor.white.cgColor)
                 }
                 context.fill(cellRect)
             }
@@ -41,7 +41,7 @@ class Grid : UIView {
         setNeedsDisplay()
     }
     
-   func cellAtPoint(_ Point: CGPoint) -> Cell {
+    func cellAtPoint(_ Point: CGPoint) -> Cell {
         let x = Int(Point.x/cellSize)
         let y = Int(Point.y/cellSize)
         if aliveCells.contains(where: {$0.x == x && $0.y == y}) {
@@ -73,66 +73,66 @@ class Grid : UIView {
                 newAliveCells.insert(cell.copy(isAlive: true))
             }
             
-        /*    if aliveCells.contains(where: { cell in
-                cell.x == Int((bounds.width/cellSize) - 1)
-            }){
-                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-                    neighbor.x == Int(bounds.width/cellSize) && neighbor.y == cell.y
-                } , x: 0, y: cell.y))
-            }
-            
-            if aliveCells.contains(where: { cell in
-                cell.x == 0
-            }){
-                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-                    neighbor.x == -1 && neighbor.y == cell.y
-                } , x: Int((bounds.width/cellSize) - 1), y: cell.y))
-            }
-            
-            if aliveCells.contains(where: { cell in
-                cell.y == Int((bounds.height/cellSize) - 1)
-            }){
-                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-                    neighbor.y == Int(bounds.height/cellSize) && neighbor.x == cell.x
-                } , x: cell.x, y: 0))
-            }
-            
-            if aliveCells.contains(where: { cell in
-                cell.y == 0
-            }){
-                newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-                    neighbor.y == -1 && neighbor.x == cell.x
-                } , x: cell.x, y: Int((bounds.height/cellSize) - 1)))
-            } */
+            /*    if aliveCells.contains(where: { cell in
+             cell.x == Int((bounds.width/cellSize) - 1)
+             }){
+             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+             neighbor.x == Int(bounds.width/cellSize) && neighbor.y == cell.y
+             } , x: 0, y: cell.y))
+             }
+             
+             if aliveCells.contains(where: { cell in
+             cell.x == 0
+             }){
+             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+             neighbor.x == -1 && neighbor.y == cell.y
+             } , x: Int((bounds.width/cellSize) - 1), y: cell.y))
+             }
+             
+             if aliveCells.contains(where: { cell in
+             cell.y == Int((bounds.height/cellSize) - 1)
+             }){
+             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+             neighbor.y == Int(bounds.height/cellSize) && neighbor.x == cell.x
+             } , x: cell.x, y: 0))
+             }
+             
+             if aliveCells.contains(where: { cell in
+             cell.y == 0
+             }){
+             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
+             neighbor.y == -1 && neighbor.x == cell.x
+             } , x: cell.x, y: Int((bounds.height/cellSize) - 1)))
+             } */
             
         }
         // Setimizi güncelleyelim.
         aliveCells = newAliveCells
-
+        
         setNeedsDisplay()
     }
-
-
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            setupGestureRecognizers()
-        }
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupGestureRecognizers()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupGestureRecognizers()
+    } 
+    
+    @objc func handleTap(recognizer: UITapGestureRecognizer) {
+        let point = recognizer.location(in: self)
+        let cell = cellAtPoint(point)
         
-        required init?(coder: NSCoder) {
-            super.init(coder: coder)
-            setupGestureRecognizers()
-        } 
-
-        @objc func handleTap(recognizer: UITapGestureRecognizer) {
-            let point = recognizer.location(in: self)
-            let cell = cellAtPoint(point)
-
-            if aliveCells.contains(cell) {
-                setCellDead(cell: cell)
-            } else {
-                setCellAlive(cell: cell)
-            }
-        } 
+        if aliveCells.contains(cell) {
+            setCellDead(cell: cell)
+        } else {
+            setCellAlive(cell: cell)
+        }
+    } 
     
     func setupGestureRecognizers() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -140,7 +140,7 @@ class Grid : UIView {
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         self.addGestureRecognizer(panRecognizer)
     }
-
+    
     @objc func handlePan(recognizer: UIPanGestureRecognizer) {
         let point = recognizer.location(in: self)
         let cell = cellAtPoint(point)
@@ -165,11 +165,7 @@ class Grid : UIView {
             lastToggledCell = nil
         }
     }
-
-
-
-
-    }
+}
 
 
 

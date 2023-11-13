@@ -13,7 +13,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+     // view.backgroundColor = .systemFill
+        view.backgroundColor = UIColor(red: 0.9, green: 0.7, blue: 0.4, alpha: 1.0)
         setupGameOfLifeGrid()
         setupButtonsAndStackView()
     }
@@ -24,7 +25,7 @@ class ViewController: UIViewController {
         gameOfLifeGrid.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             gameOfLifeGrid.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            gameOfLifeGrid.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
+            gameOfLifeGrid.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -80),
             gameOfLifeGrid.widthAnchor.constraint(equalToConstant: 390),
             gameOfLifeGrid.heightAnchor.constraint(equalToConstant: 435)
         ])
@@ -46,7 +47,7 @@ class ViewController: UIViewController {
         
         // Stack view kısıtlamalarını etkinleştir
         NSLayoutConstraint.activate([
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -150),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -165),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             stackView.heightAnchor.constraint(equalToConstant: 50)
@@ -56,13 +57,14 @@ class ViewController: UIViewController {
     // Buton kurulumunu sadeleştirmek için yardımcı fonksiyon
     func setupButton(_ button: UIButton, title: String, selector: Selector) {
         button.setTitle(title, for: .normal)
-        button.backgroundColor = .systemBlue
+    //  button.backgroundColor = .systemBlue
+        button.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 4
+        button.layer.cornerRadius = 5
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius = 4
-        button.layer.shadowOpacity = 0.5
+        button.layer.shadowRadius = 5
+        button.layer.shadowOpacity = 0.6
         button.addTarget(self, action: selector, for: .touchUpInside)
 
         // Butona tıklanıldığında renginin koyulaşmasını sağlayacak fonksiyonları ekle
@@ -74,15 +76,27 @@ class ViewController: UIViewController {
     
     func startGame() {
         isGameRunning = true
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.06, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
         clearButton.backgroundColor = .systemGray
+        clearButton.alpha = 0.45
+        clearButton.isEnabled = false
+        restartButton.backgroundColor = .systemGray
+        restartButton.alpha = 0.45
+        restartButton.isEnabled = false
     }
     
     func stopGame() {
         isGameRunning = false
         gameTimer?.invalidate()
         gameTimer = nil
-        clearButton.backgroundColor = .systemBlue
+  //    clearButton.backgroundColor = .systemBlue
+        clearButton.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
+        clearButton.alpha = 1.0
+        clearButton.isEnabled = true
+  //    restartButton.backgroundColor = .systemBlue
+        restartButton.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
+        restartButton.alpha = 1.0
+        restartButton.isEnabled = true
     }
     
     @objc func didTapButton(_ button: UIButton) {
@@ -94,7 +108,9 @@ class ViewController: UIViewController {
     }
     
     @objc func restartFunc(){
-
+        if !isGameRunning{
+            
+        }
     }
     
     @objc func clearFunc(_ button: UIButton){
