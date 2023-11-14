@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		359BEB4B2B029CEC007AF5F6 /* Thoughts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359BEB4A2B029CEC007AF5F6 /* Thoughts.swift */; };
 		35F11D792AF1A2F100CD38FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F11D782AF1A2F100CD38FA /* AppDelegate.swift */; };
 		35F11D7B2AF1A2F100CD38FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F11D7A2AF1A2F100CD38FA /* SceneDelegate.swift */; };
 		35F11D802AF1A2F100CD38FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35F11D7E2AF1A2F100CD38FA /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		359BEB4A2B029CEC007AF5F6 /* Thoughts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thoughts.swift; sourceTree = "<group>"; };
 		35F11D752AF1A2F100CD38FA /* Game of Life.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game of Life.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35F11D782AF1A2F100CD38FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35F11D7A2AF1A2F100CD38FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		354BD80F2AF2975C005DBAD2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				359BEB4A2B029CEC007AF5F6 /* Thoughts.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				359BEB4B2B029CEC007AF5F6 /* Thoughts.swift in Sources */,
 				35F11DB12AF1AB5D00CD38FA /* ViewController.swift in Sources */,
 				35F11D792AF1A2F100CD38FA /* AppDelegate.swift in Sources */,
 				35F11DAF2AF1A36700CD38FA /* Cell.swift in Sources */,

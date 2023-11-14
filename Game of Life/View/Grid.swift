@@ -17,8 +17,8 @@ class Grid : UIView {
         guard let context = UIGraphicsGetCurrentContext() else {return}
         
         //Hücreleri Çizelim
-        for y in -1..<Int(bounds.height/cellSize){
-            for x in -1..<Int(bounds.width/cellSize){
+        for y in 0..<Int(bounds.height/cellSize){
+            for x in 0..<Int(bounds.width/cellSize){
                 let cellRect = CGRect(x: CGFloat(x) * cellSize, y: CGFloat(y) * cellSize, width: cellSize, height: cellSize)
                 
                 if aliveCells.contains(Cell(isAlive: true, x: x, y: y)) {
@@ -30,6 +30,7 @@ class Grid : UIView {
             }
         }
     }
+    
     
     func setCellAlive (cell: Cell){
         aliveCells.insert(cell)
@@ -61,6 +62,7 @@ class Grid : UIView {
             allCellsToCheck.formUnion(cell.neighbors)
         }
         
+        
         // Şimdi her hücre için kuralları uygulayalım.
         for cell in allCellsToCheck {
             let livingNeighborsCount = cell.neighbors.filter { neighbor in
@@ -72,39 +74,7 @@ class Grid : UIView {
             if (aliveCells.contains(cell) && (livingNeighborsCount == 2 || livingNeighborsCount == 3)) || (!aliveCells.contains(cell) && livingNeighborsCount == 3) {
                 newAliveCells.insert(cell.copy(isAlive: true))
             }
-            
-            /*    if aliveCells.contains(where: { cell in
-             cell.x == Int((bounds.width/cellSize) - 1)
-             }){
-             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-             neighbor.x == Int(bounds.width/cellSize) && neighbor.y == cell.y
-             } , x: 0, y: cell.y))
-             }
-             
-             if aliveCells.contains(where: { cell in
-             cell.x == 0
-             }){
-             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-             neighbor.x == -1 && neighbor.y == cell.y
-             } , x: Int((bounds.width/cellSize) - 1), y: cell.y))
-             }
-             
-             if aliveCells.contains(where: { cell in
-             cell.y == Int((bounds.height/cellSize) - 1)
-             }){
-             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-             neighbor.y == Int(bounds.height/cellSize) && neighbor.x == cell.x
-             } , x: cell.x, y: 0))
-             }
-             
-             if aliveCells.contains(where: { cell in
-             cell.y == 0
-             }){
-             newAliveCells.insert(Cell(isAlive: cell.neighbors.contains { neighbor in
-             neighbor.y == -1 && neighbor.x == cell.x
-             } , x: cell.x, y: Int((bounds.height/cellSize) - 1)))
-             } */
-            
+
         }
         // Setimizi güncelleyelim.
         aliveCells = newAliveCells
@@ -121,7 +91,7 @@ class Grid : UIView {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupGestureRecognizers()
-    } 
+    }
     
     @objc func handleTap(recognizer: UITapGestureRecognizer) {
         let point = recognizer.location(in: self)
@@ -132,7 +102,7 @@ class Grid : UIView {
         } else {
             setCellAlive(cell: cell)
         }
-    } 
+    }
     
     func setupGestureRecognizers() {
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))

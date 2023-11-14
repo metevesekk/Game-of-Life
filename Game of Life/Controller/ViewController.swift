@@ -6,9 +6,10 @@ class ViewController: UIViewController {
     var isGameRunning = false
     var gameOfLifeGrid: Grid!
     let playPauseButton = UIButton()
-    let restartButton = UIButton()
+    let resetButton = UIButton()
     let clearButton = UIButton()
     var countRound = UILabel()
+    var initialGameState: Set<Cell> = []
     
 
     override func viewDidLoad() {
@@ -33,12 +34,12 @@ class ViewController: UIViewController {
     
     func setupButtonsAndStackView() {
         // Butonları ayarla
-        setupButton(restartButton, title: "Restart", selector: #selector(restartFunc))
+        setupButton(resetButton, title: "Restart", selector: #selector(restartFunc))
         setupButton(playPauseButton, title: "Start", selector: #selector(toggleGameRunning))
         setupButton(clearButton, title: "Clear", selector: #selector(clearFunc))
         
         // Butonları UIStackView içinde grupla
-        let stackView = UIStackView(arrangedSubviews: [restartButton, playPauseButton, clearButton])
+        let stackView = UIStackView(arrangedSubviews: [resetButton, playPauseButton, clearButton])
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 10
@@ -76,13 +77,14 @@ class ViewController: UIViewController {
     
     func startGame() {
         isGameRunning = true
+        initialGameState = gameOfLifeGrid.aliveCells
         gameTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
         clearButton.backgroundColor = .systemGray
         clearButton.alpha = 0.45
         clearButton.isEnabled = false
-        restartButton.backgroundColor = .systemGray
-        restartButton.alpha = 0.45
-        restartButton.isEnabled = false
+        resetButton.backgroundColor = .systemGray
+        resetButton.alpha = 0.45
+        resetButton.isEnabled = false
     }
     
     func stopGame() {
@@ -94,9 +96,9 @@ class ViewController: UIViewController {
         clearButton.alpha = 1.0
         clearButton.isEnabled = true
   //    restartButton.backgroundColor = .systemBlue
-        restartButton.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
-        restartButton.alpha = 1.0
-        restartButton.isEnabled = true
+        resetButton.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
+        resetButton.alpha = 1.0
+        resetButton.isEnabled = true
     }
     
     @objc func didTapButton(_ button: UIButton) {
@@ -109,7 +111,8 @@ class ViewController: UIViewController {
     
     @objc func restartFunc(){
         if !isGameRunning{
-            
+            gameOfLifeGrid.aliveCells = initialGameState // Başlangıç durumunu geri yükle
+            gameOfLifeGrid.setNeedsDisplay()
         }
     }
     
