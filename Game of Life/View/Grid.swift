@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class Grid : UIView {
-    var cellSize : CGFloat = 7.5
+    var cellSize : CGFloat = 15
     var aliveCells : Set<Cell> = []
     var lastToggledCell: Cell?
     
@@ -24,9 +24,14 @@ class Grid : UIView {
                 if aliveCells.contains(Cell(isAlive: true, x: x, y: y)) {
                     context.setFillColor(UIColor.black.cgColor)
                 } else {
-                    context.setFillColor(UIColor.white.cgColor)
+                    context.setFillColor(UIColor.systemYellow.cgColor)
                 }
                 context.fill(cellRect)
+                
+                // Izgara çizgilerini çizelim
+                context.setStrokeColor(UIColor.gray.cgColor) // Izgara çizgisi rengi
+                context.setLineWidth(0.70) // Izgara çizgisi kalınlığı
+                context.stroke(cellRect) // Hücrenin etrafına çerçeve çiz
             }
         }
     }
