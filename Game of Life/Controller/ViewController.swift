@@ -46,12 +46,19 @@ class ViewController: UIViewController {
     func setupSlidersAndStackView() {
         let stackView = UIStackView(arrangedSubviews: [sliderOfSpeed,sliderOfGridSize])
         stackView.axis = .vertical
-        stackView.spacing = 10
+        stackView.spacing = 9
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        sliderOfSpeed.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
+            sliderOfSpeed.addGestureRecognizer(tapGestureRecognizer)
+
+            // Slider değerlerini ayarla (örnek değerler, ihtiyacınıza göre değiştirin)
+        sliderOfSpeed.minimumValue = 1
+        sliderOfSpeed.maximumValue = 45
         
         NSLayoutConstraint.activate([
-            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -75),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -71),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 90),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
         ])
@@ -63,8 +70,8 @@ class ViewController: UIViewController {
         stackView.spacing = 9
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        let imageViewWidth: CGFloat = 33 // Örnek genişlik değeri
-        let imageViewHeight: CGFloat = 33 // Örnek yükseklik değeri
+        let imageViewWidth: CGFloat = 31 // Örnek genişlik değeri
+        let imageViewHeight: CGFloat = 31 // Örnek yükseklik değeri
 
         speedImageView.widthAnchor.constraint(equalToConstant: imageViewWidth).isActive = true
         speedImageView.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
@@ -73,7 +80,7 @@ class ViewController: UIViewController {
         sizeImageView.heightAnchor.constraint(equalToConstant: imageViewHeight).isActive = true
         
         speedImageView.image = UIImage(systemName: "timer")
-        sizeImageView.image = UIImage(systemName: "square.grid.3x3")
+        sizeImageView.image = UIImage(systemName: "square.grid.2x2")
         speedImageView.tintColor = playPauseButton.backgroundColor
         sizeImageView.tintColor = playPauseButton.backgroundColor
         
@@ -81,9 +88,9 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -71),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-          //  stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -280),
         ])
     }
+    
     
     func setupButtonsAndStackView() {
         // Butonları ayarla
@@ -141,7 +148,9 @@ class ViewController: UIViewController {
     func startGame() {
         isGameRunning = true
         initialGameState = gameOfLifeGrid.aliveCells
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
+
+        gameTimer = Timer.scheduledTimer(timeInterval: calculateTimeInterval(from: sliderOfSpeed.value), target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
+
         disenableButton(clearButton)
         disenableButton(resetButton)
     }
@@ -154,6 +163,21 @@ class ViewController: UIViewController {
         enableButton(resetButton)
     }
     
+    @objc func sliderValueChanged(_ sender: UISlider) {
+        if isGameRunning {
+            gameTimer?.invalidate()
+            let newTimeInterval = calculateTimeInterval(from: sender.value)
+            gameTimer = Timer.scheduledTimer(timeInterval: newTimeInterval, target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
+        }
+    }
+
+    // Kaydırıcının değerini alıp oyun hızına dönüştüren fonksiyon
+    func calculateTimeInterval(from sliderValue: Float) -> TimeInterval {
+        // Örnek: Slider değeri arttıkça hızın azalmasını istiyorsanız, burada bir hesaplama yapın.
+        // Bu sadece bir örnek, gereksinimlerinize göre ayarlayabilirsiniz.
+        return TimeInterval(1.0 / sliderValue)
+    }
+    
     @objc func didTapButton(_ button: UIButton) {
         button.alpha = 0.7 // Koyulaşma efekti
     }
@@ -161,6 +185,17 @@ class ViewController: UIViewController {
     @objc func didReleaseButton(_ button: UIButton) {
         button.alpha = 1.0 // Normal şeffaflık
     }
+    
+    @objc func sliderTapped(_ gestureRecognizer: UITapGestureRecognizer) {
+        let pointTapped = gestureRecognizer.location(in: self.sliderOfSpeed)
+
+        let widthOfSlider = sliderOfSpeed.frame.size.width
+        let newValue = pointTapped.x / widthOfSlider * CGFloat(sliderOfSpeed.maximumValue - sliderOfSpeed.minimumValue) + CGFloat(sliderOfSpeed.minimumValue)
+
+        sliderOfSpeed.setValue(Float(newValue), animated: true)
+        sliderValueChanged(sliderOfSpeed) // Değer değiştiğinde ilgili işlevi çağır
+    }
+
     
     @objc func restartFunc(){
         if !isGameRunning{

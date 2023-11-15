@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class Grid : UIView {
-    var cellSize : CGFloat = 15
+    var cellSize : CGFloat = 7.5
     var aliveCells : Set<Cell> = []
     var lastToggledCell: Cell?
     
