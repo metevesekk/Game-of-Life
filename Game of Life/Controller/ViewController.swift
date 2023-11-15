@@ -9,6 +9,7 @@ class ViewController: UIViewController {
     let resetButton = UIButton()
     let clearButton = UIButton()
     var countRound = UILabel()
+    var Button = Buttons()
     var initialGameState: Set<Cell> = []
     var sliderOfSpeed = UISlider()
     var sliderOfGridSize = UISlider()
@@ -53,7 +54,7 @@ class ViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
             sliderOfSpeed.addGestureRecognizer(tapGestureRecognizer)
 
-            // Slider değerlerini ayarla (örnek değerler, ihtiyacınıza göre değiştirin)
+        // Slider değerlerini ayarla (örnek değerler, ihtiyacınıza göre değiştirin)
         sliderOfSpeed.minimumValue = 1
         sliderOfSpeed.maximumValue = 45
         
@@ -94,9 +95,9 @@ class ViewController: UIViewController {
     
     func setupButtonsAndStackView() {
         // Butonları ayarla
-        setupButton(resetButton, title: "Restart", selector: #selector(restartFunc))
-        setupButton(playPauseButton, title: "Start", selector: #selector(toggleGameRunning))
-        setupButton(clearButton, title: "Clear", selector: #selector(clearFunc))
+        Button.setupButton(resetButton, title: "Restart", selector: #selector(restartFunc), target: self)
+        Button.setupButton(playPauseButton, title: "Start", selector: #selector(toggleGameRunning), target: self)
+        Button.setupButton(clearButton, title: "Clear", selector: #selector(clearFunc), target: self)
         
         // Butonları UIStackView içinde grupla
         let stackView = UIStackView(arrangedSubviews: [resetButton, playPauseButton, clearButton])
@@ -116,34 +117,9 @@ class ViewController: UIViewController {
     }
     
     // Buton kurulumunu sadeleştirmek için yardımcı fonksiyon
-    func setupButton(_ button: UIButton, title: String, selector: Selector) {
-        button.setTitle(title, for: .normal)
-    //  button.backgroundColor = .systemBlue
-        button.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowOffset = CGSize(width: 0, height: 2)
-        button.layer.shadowRadius = 5
-        button.layer.shadowOpacity = 0.6
-        button.addTarget(self, action: selector, for: .touchUpInside)
+    
+    
 
-        // Butona tıklanıldığında renginin koyulaşmasını sağlayacak fonksiyonları ekle
-        button.addTarget(self, action: #selector(didTapButton(_:)), for: .touchDown)
-        button.addTarget(self, action: #selector(didReleaseButton(_:)), for: [.touchUpInside, .touchUpOutside])
-    }
-    
-    func disenableButton(_ button: UIButton){
-        button.isEnabled = false
-        button.backgroundColor = .systemGray
-        button.alpha = 0.45
-    }
-    
-    func enableButton(_ button: UIButton){
-        button.backgroundColor = UIColor(red: 0.2, green: 0.5, blue: 0.75, alpha: 1.0)
-        button.alpha = 1.0
-        button.isEnabled = true
-    }
     
     func startGame() {
         isGameRunning = true
@@ -151,16 +127,16 @@ class ViewController: UIViewController {
 
         gameTimer = Timer.scheduledTimer(timeInterval: calculateTimeInterval(from: sliderOfSpeed.value), target: self, selector: #selector(performGameStep), userInfo: nil, repeats: true)
 
-        disenableButton(clearButton)
-        disenableButton(resetButton)
+        Button.disenableButton(clearButton)
+        Button.disenableButton(resetButton)
     }
     
     func stopGame() {
         isGameRunning = false
         gameTimer?.invalidate()
         gameTimer = nil
-        enableButton(clearButton)
-        enableButton(resetButton)
+        Button.enableButton(clearButton)
+        Button.enableButton(resetButton)
     }
     
     @objc func sliderValueChanged(_ sender: UISlider) {
@@ -178,13 +154,7 @@ class ViewController: UIViewController {
         return TimeInterval(1.0 / sliderValue)
     }
     
-    @objc func didTapButton(_ button: UIButton) {
-        button.alpha = 0.7 // Koyulaşma efekti
-    }
-
-    @objc func didReleaseButton(_ button: UIButton) {
-        button.alpha = 1.0 // Normal şeffaflık
-    }
+  
     
     @objc func sliderTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         let pointTapped = gestureRecognizer.location(in: self.sliderOfSpeed)
